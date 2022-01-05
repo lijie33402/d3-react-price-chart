@@ -3,7 +3,7 @@ import './PriceChart.css';
 import { useResizeObserver } from '../utils/hook';
 import { select, scaleTime, scaleLinear, extent, line, axisBottom, axisLeft, axisRight } from 'd3';
 
-function PriceChart({data}) {
+function PriceChart({ data }) {
   console.log('render pricechart', data)
   const wrapperRef = useRef();
   const svgRef = useRef();
@@ -50,6 +50,32 @@ function PriceChart({data}) {
     gContainer
       .select(".y-axis")
       .call(yAxis);
+    // 成交量scale
+    const yVolumeScale = scaleLinear()
+      .domain(extent(data, d => d.volume))
+      .range([boundedHeight, boundedHeight - boundedHeight / 10]);
+    gContainer
+      .selectAll('.volume')
+      .data(data)
+      .join('rect')
+      .attr('class', 'volume')
+      .attr('x', d => {
+        return xScale(d['date']);
+      })
+      .attr('y', d => {
+        return yVolumeScale(d['volume']);
+      })
+      .attr('fill', (d, i) => {
+        if (i === 0) {
+          return '#03a678';
+        } else {
+          return data[i - 1].close > d.close ? '#c0392b' : '#03a678';
+        }
+      })
+      .attr('width', 1)
+      .attr('height', d => {
+        return boundedHeight - yVolumeScale(d['volume']);
+      });
   }, [data, dimensions])
 
   return (
