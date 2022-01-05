@@ -4,7 +4,6 @@ import { useResizeObserver } from '../utils/hook';
 import { select, scaleTime, scaleLinear, extent, line, axisBottom, axisLeft, axisRight } from 'd3';
 
 function PriceChart({ data }) {
-  console.log('render pricechart', data)
   const wrapperRef = useRef();
   const svgRef = useRef();
   const dimensions = useResizeObserver(wrapperRef)
