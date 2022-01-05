@@ -1,7 +1,7 @@
 import './App.css';
 import PriceChart from "./components/PriceChart";
-import { json } from 'd3';
 import { useEffect, useState } from 'react';
+
 function App() {
   const [priceData, setPriceData] = useState([]);
   useEffect(() => {
